@@ -1,0 +1,180 @@
+* {
+	box-sizing: border-box;
+}
+
+body {
+	margin: 0;
+	background: #f3f6f3;
+	color: #24312e;
+	font-family: "Segoe UI", sans-serif;
+	line-height: 1.6;
+}
+
+header {
+	padding: 1.5rem 1rem 2.5rem;
+	background: #24584e;
+	color: #fff;
+	text-align: center;
+}
+
+header h1 {
+	margin: 1rem 0 0;
+	font-family: Georgia, serif;
+	font-size: 2.5rem;
+}
+
+header p {
+	margin: 0.25rem 0 0;
+}
+
+nav ul {
+	display: flex;
+	justify-content: center;
+	gap: 16px;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+nav a {
+	display: inline-block;
+	padding: 0.35rem 0.65rem;
+	border-radius: 4px;
+	color: #fff;
+	text-decoration: none;
+	transition: background-color 180ms ease, color 180ms ease;
+}
+
+nav a:hover,
+nav a:focus-visible {
+	background: #fff;
+	color: #24584e;
+}
+
+main {
+	width: 100%;
+	max-width: 900px;
+	margin: 2rem auto;
+	padding: 0 1rem;
+}
+
+section {
+	margin-bottom: 2rem;
+	padding: 1.25rem;
+	border-radius: 6px;
+	background: #fff;
+	box-shadow: 0 2px 8px rgb(36 49 46 / 8%);
+}
+
+h2 {
+	color: #24584e;
+	font-family: Georgia, serif;
+}
+
+.features {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 1rem;
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+
+.features li {
+	padding: 1rem;
+	border: 1px solid #d5dfda;
+	border-radius: 6px;
+	background: #fff;
+}
+
+table {
+	width: 100%;
+	border-collapse: collapse;
+	background: #fff;
+}
+
+th,
+td {
+	padding: 0.7rem 0.85rem;
+	border: 1px solid #bdcbc4;
+	text-align: left;
+}
+
+th {
+	background: #e3ece7;
+}
+
+form {
+	max-width: 560px;
+}
+
+form div {
+	margin-bottom: 1rem;
+}
+
+label {
+	display: block;
+	margin-bottom: 0.3rem;
+	font-weight: 600;
+}
+
+input {
+	width: 100%;
+	padding: 0.65rem 0.75rem;
+	border: 1px solid #aebdb5;
+	border-radius: 4px;
+	background: #fff;
+	color: inherit;
+	font: inherit;
+}
+
+button {
+	padding: 0.65rem 1rem;
+	border: 0;
+	border-radius: 4px;
+	background: #bd592f;
+	color: #fff;
+	font: inherit;
+	cursor: pointer;
+	transition: background-color 180ms ease, transform 180ms ease;
+}
+
+button:hover,
+button:focus-visible {
+	background: #934222;
+	transform: translateY(-1px);
+}
+
+footer {
+	padding: 1rem;
+	background: #e3ece7;
+	text-align: center;
+}
+
+footer p {
+	margin: 0;
+}
+
+@media (max-width: 600px) {
+	header {
+		padding: 1rem 0.75rem 1.5rem;
+	}
+
+	header h1 {
+		font-size: 2rem;
+	}
+
+	main {
+		margin: 1.25rem auto;
+		padding: 0 0.625rem;
+	}
+
+	.features {
+		grid-template-columns: 1fr;
+	}
+
+	th,
+	td {
+		padding: 0.55rem;
+	}
+}
