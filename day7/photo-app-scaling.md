@@ -2,7 +2,7 @@
 
 ## Assumptions
 
-- SnapShare has 10 million registered users; 10% are active daily, giving 1 million daily active users.
+- SnapShare has 10 million registered users; 10% are active daily, so `10,000,000 × 0.10 = 1,000,000` daily active users.
 - Each daily active user uploads one 2 MB photo per day and views 50 feed pages per day.
 - Each photo gets one 50 KB thumbnail. Sizes use decimal units: 1 MB = 1,000 KB and 1 TB = 1,000,000 MB.
 - A feed page view is one application request; image and thumbnail downloads create additional CDN requests that depend on how many photos are displayed per page.
@@ -11,28 +11,29 @@
 
 ## Workload Estimates
 
-- **Uploads:** 1,000,000 photos/day, or about 11.6 uploads/second on average; plan for about 58 uploads/second at the assumed 5× peak.
-- **Feed views:** 50,000,000 page views/day, or about 579 feed requests/second on average; plan for about 2,894 requests/second at the assumed 5× peak.
+- **Uploads:** `1,000,000 uploads/day ÷ 86,400 seconds/day = 11.6 uploads/second` on average; `11.6 × 5 = 58 uploads/second` at the assumed peak.
+- **Feed views:** `1,000,000 users × 50 views/day = 50,000,000 views/day`; `50,000,000 ÷ 86,400 = 578.7 feed requests/second` on average; `578.7 × 5 = 2,893.5`, or about `2,894 requests/second` at the assumed peak.
 - **Photo storage per year:** 1,000,000 photos/day × 365 days × (2 MB original + 0.05 MB thumbnail) = **748,250,000 MB**, or about **748 TB** (decimal) before replication and backups.
-- **Traffic profile:** The system is **read-heavy**: it serves about 50 feed-page views for each photo upload, before counting repeat reads and image downloads.
+- **Traffic profile:** The system is **read-heavy**: it serves about 50 feed-page views for each photo upload, before counting repeat reads and image downloads. The design should prioritize CDN and feed-cache hits and use the read replica for feed queries, while routing writes to the primary database.
+
+## Photo Storage Decision
+
+Photo files should go in object storage, not inside the database. Large binary files would make the database and its backups much larger, slow backup and restore operations, and compete with metadata transactions for database resources. Object storage is built to store and serve large files independently; the database should keep each photo's owner, timestamp, status, and object-storage key, while the CDN delivers the file to viewers.
 
 ## Architecture
 
 ```text
-Clients -- image requests --> [CDN] -- cache miss --> [Object storage]
-   |
-   +-- feed/API requests --> [Load balancer] --> [App servers] <--> [Cache]
-                    |       |
-              metadata write|       +-- upload original --> [Object storage]
-                    v                              ^
-                  [Primary DB]                        |
-                    | replication                  |
-                    v                              |
-                [Read replica]                        |
-                              |
-App servers -- enqueue thumbnail job --> [Thumbnail queue] --> [Thumbnail worker]
-                      | create/store thumbnail
-                      +--------------------> [Object storage]
+FEED AND METADATA
+[Clients] -- API/feed --> [Load balancer] --> [App servers] <--> [Cache]
+[App servers] -- metadata write --> [Primary DB] -- replication --> [Read replica]
+[App servers] -- feed read ---------------------------------------> [Read replica]
+
+PHOTO FILES
+[Clients] -- image request --> [CDN] -- cache miss --> [Object storage]
+[App servers] -- original upload --------------------> [Object storage]
+[App servers] -- thumbnail job --> [Thumbnail queue] --> [Thumbnail worker]
+[Object storage] -- original image ------------------> [Thumbnail worker]
+[Thumbnail worker] -- thumbnail --------------------> [Object storage]
 ```
 
 ### Components
