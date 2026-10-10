@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#f4f6fb">
+  <title>Quick Note</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="page-shell">
+    <header class="topbar">
+      <a class="wordmark" href="index.html" aria-label="Quick Note home"><span class="brand-icon" aria-hidden="true">✎</span> quicknote</a>
+      <button class="theme-button" id="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </header>
+
+    <section class="note-card" aria-labelledby="page-title">
+      <div class="eyebrow"><span class="status-dot" aria-hidden="true"></span> YOUR SPACE, YOUR THOUGHTS</div>
+      <h1 id="page-title">A little room to think.</h1>
+      <p class="intro">Capture a thought before it wanders off. Your draft saves automatically.</p>
+
+      <label class="field-label" for="note-text">Your note</label>
+      <textarea id="note-text" name="note" placeholder="Start writing something…" aria-describedby="writing-hint char-count word-count"></textarea>
+      <div class="writing-meta">
+        <span id="writing-hint">A quiet place for your next big idea.</span>
+        <div class="counts" aria-live="polite" aria-atomic="true">
+          <p id="char-count">0 / 200 characters</p>
+          <span class="count-divider" aria-hidden="true">·</span>
+          <p id="word-count">0 words</p>
+        </div>
+      </div>
+
+      <div class="card-footer">
+        <span class="saved-indicator"><span aria-hidden="true">✓</span> Saved on this device</span>
+        <button class="clear-button" id="clear-btn" type="button"><span aria-hidden="true">⌫</span> Clear note</button>
+      </div>
+    </section>
+
+    <footer class="page-footer">A simple place to get it out of your head.</footer>
+  </main>
+</body>
+</html>
