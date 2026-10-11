@@ -1,0 +1,7 @@
+# Course Reflection
+
+The most difficult concept in the course was designing a system that stays correct when many people act at the same time. TicketHub made this especially clear: two customers might try to buy the same seat within milliseconds. I worked through it by following the seat from the data model into the API and checkout flow. A seat has one authoritative database row, and a conditional transaction lets only one request create a valid hold. Thinking through expired holds and payment confirmation helped me see that system design is not just drawing components; the guarantees have to hold across the whole workflow.
+
+Based on the feedback and workload details I incorporated into the capstone, I would improve the estimates by connecting them more directly to measurable system capacity. The supplied figures let me calculate page views and the rate of people arriving for a popular sale, but they do not tell me how many API calls each person makes or how traffic peaks within those ten minutes. Next, I would define those assumptions, model retries and seat-map polling, and use a load test to check whether the inventory database can handle the resulting burst. I would also make the checkout and late-payment recovery sequence easier to scan in the architecture diagram.
+
+Next, I want to learn how to deploy and monitor a small cloud application, then run load tests against it. That would help me compare my estimates with observed latency, error rates, and database contention, and improve the design from evidence rather than assumptions alone.
